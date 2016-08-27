@@ -1,4 +1,5 @@
 require 'mindflow/version'
+require 'mindflow/parser'
 require 'parser/current'
 
 # Ruby code generation directly from your mind

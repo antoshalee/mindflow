@@ -1,13 +1,7 @@
-# Example ruby code
 class User
-  attr_accessor :name, :email
-
-  def intialize(name, email)
-    @name = name
-    @email = email
+  def initialize
   end
 
-  def say_hello
-    puts "Hello #{name}"
+  def say_hello(to)
   end
 end
