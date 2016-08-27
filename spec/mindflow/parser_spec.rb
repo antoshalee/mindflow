@@ -5,33 +5,20 @@ describe Mindflow::Parser do
 
   subject { described_class.new.parse(source) }
 
-  # it 'todo delete' do
-  #   path = Pathname.new "#{__dir__}/../fixtures/some_ruby_code.rb"
-  #   ast = ::Parser::CurrentRuby.parse path.read
-  # end
+  describe 'file examples' do
+    context 'example1' do
+      let(:source) do
+        Pathname.new("#{__dir__}/../fixtures/example1.mind").read
+      end
 
-  context 'simple class with 2 methods' do
-    let(:source) do
-      "
-User
-  initialize
-  say_hello(to)
-"
-    end
+      let(:ast) do
+        ruby = Pathname.new("#{__dir__}/../fixtures/example1.rb").read
+        ::Parser::CurrentRuby.parse ruby
+      end
 
-    let(:ast) do
-      s(:class,
-        s(:const, nil, :User), nil,
-        s(:begin,
-          s(:def, :initialize,
-            s(:args), nil),
-          s(:def, :say_hello,
-            s(:args,
-              s(:arg, :to)), nil)))
-    end
-
-    it 'works' do
-      expect(subject).to eq ast
+      it 'works' do
+        expect(subject).to eq ast
+      end
     end
   end
 end
