@@ -5,7 +5,11 @@ describe Mindflow do
     expect(Mindflow::VERSION).not_to be nil
   end
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+  # Future feature
+  it 'parses' do
+    pending
+    path = Pathname.new "#{__dir__}/fixtures/some_ruby_code.rb"
+    ::Parser::CurrentRuby.parse path.read
+    expect(true).to eq true
   end
 end
