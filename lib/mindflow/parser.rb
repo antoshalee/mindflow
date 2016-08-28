@@ -88,8 +88,6 @@ class Mindflow::Parser
     stack_pop until @stack.empty?
 
     @files.map { |file| Mindflow::File.new(file.ast) }
-  ensure
-    @stack = []
   end
 
   private
