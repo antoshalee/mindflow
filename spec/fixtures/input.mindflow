@@ -1,0 +1,69 @@
+$shared_params services
+  p=app/services
+  $rspec
+
+$shared_params model
+  $ar
+  $rspec
+
+$shared_params controllers
+  p=app/controllers
+  $controller
+  $controller-scaffold
+  $controller-routes
+
+$shared_params sidekiq_methods
+  perform
+
+User *model
+  $self
+    update_all
+  $ar-mig
+    name
+    birth_year integer
+  say_hello to
+  activate
+    `User.update(active: true)`
+  deactivate
+    `User.update(active: false)`
+
+Post *model
+  $ar-mig
+    title
+    description text
+    user references
+    timestamps
+
+  $ar-scope
+    published `where status: 'published'`
+
+  BaseService | *services
+
+  Create BaseService | *service
+    $self
+      call title: description:
+    initialize title: description: $attr_r
+    create
+      `User.create`
+
+  Update BaseService *services
+    initialize post $attr_r
+    update update_attributes $rspec
+      `post.update update_attributes`
+    $private
+      update_attributes
+
+  CreateJob | *sidekiq
+    *sidekiq_methods
+
+  UpdateJob | *sidekiq
+    *sidekiq_methods
+
+  Batch m
+    Update
+    UpdateJob
+      perform id
+        `Update.call`
+
+UsersController ApplicationController | *controllers
+PostsController ApplicationController | *controllers
