@@ -1,4 +1,6 @@
-# Parse mindflow string and returns Ruby AST
+# Generates collection
+# of ruby abstract syntax trees
+# compatible with https://github.com/whitequark/parser
 class Mindflow::Parser
   # Base class for mindflow AST nodes
   # Node can build ruby AST-subtree
@@ -86,6 +88,8 @@ class Mindflow::Parser
     @stack = []
   end
 
+  private
+
   CAMELCASE_RE = /([A-Z][a-z0-9]+)+/ # TODO: find a better version for camelcase
   UNDERSCORE_RE = /([a-z0-9_]+\!?)/ # TODO: find a better regexp for underscore
   ARGS_RE = /#{UNDERSCORE_RE}(\s#{UNDERSCORE_RE})*/
@@ -99,7 +103,7 @@ class Mindflow::Parser
     line = line.strip
     node = case line
            when CAMELCASE_RE
-             ClassNode.new(line.to_sym)
+             parse_camelcase($&, $')
            when UNDERSCORE_RE
              parse_underscore($&, $')
            end
@@ -133,6 +137,10 @@ class Mindflow::Parser
 
   def get_indent(line)
     line[/\A\s*/].size
+  end
+
+  def parse_camelcase(token, rest_line)
+    ClassNode.new(token.to_sym)
   end
 
   def parse_underscore(token, rest_line)
