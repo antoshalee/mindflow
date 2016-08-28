@@ -73,6 +73,6 @@ class Mindflow::Parser
   end
 
   def n(type, children = [])
-    AST::Node.new(type, children)
+    Parser::AST::Node.new(type, children)
   end
 end
