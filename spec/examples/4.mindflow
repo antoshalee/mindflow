@@ -1,0 +1,7 @@
+UserApplication Application
+  self
+    reject_all!
+    apply_all!
+    published
+  reject!
+  apply!

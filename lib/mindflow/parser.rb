@@ -37,7 +37,7 @@ class Mindflow::Parser
     end
 
     def def_const(name)
-      n(:const, [nil, name])
+      n(:const, [nil, name.to_sym])
     end
 
     def n(type, children = [])
@@ -56,8 +56,11 @@ class Mindflow::Parser
   # Represents mindflow class
   class ClassNode < BaseNode
     def build_ruby_ast
-      const = def_const(@name)
-      def_class(const, nil, body)
+      class_name = def_const(@name)
+      superclass_name =
+        @options[:superclass] && def_const(@options[:superclass])
+
+      def_class(class_name, superclass_name, body)
     end
 
     def body
@@ -66,6 +69,7 @@ class Mindflow::Parser
     end
   end
 
+  # Represents mindflow self scope
   class SelfNode < ClassNode
     def build_ruby_ast
       n(:sclass, [n(:self), body])
@@ -73,7 +77,7 @@ class Mindflow::Parser
   end
 
   def parse(str)
-    @current_indent = -1
+    @current_indent = -2
 
     lines = str.split(/\r?\n/)
 
@@ -91,13 +95,17 @@ class Mindflow::Parser
   private
 
   CAMELCASE_RE = /([A-Z][a-z0-9]+)+/ # TODO: find a better version for camelcase
+  CHAINED_CONSTANTS_RE = /#{CAMELCASE_RE}(\:\:#{CAMELCASE_RE})*/
+
   UNDERSCORE_RE = /([a-z0-9_]+\!?)/ # TODO: find a better regexp for underscore
   ARGS_RE = /#{UNDERSCORE_RE}(\s#{UNDERSCORE_RE})*/
 
+
+  TAB_SIZE = 2
   def parse_line(line)
     indent = get_indent(line)
 
-    indent_delta = indent - @current_indent
+    steps = (indent - @current_indent) / TAB_SIZE
     @current_indent = indent
 
     line = line.strip
@@ -107,16 +115,14 @@ class Mindflow::Parser
            when UNDERSCORE_RE
              parse_underscore($&, $')
            end
-    operate_on_stack(indent_delta, node)
+    operate_on_stack(steps, node)
   end
 
-  def operate_on_stack(indent_delta, node)
-    if indent_delta == 0 # single line node is ready
-      stack_pop
+  def operate_on_stack(steps, node)
+    if steps > 0
       add_to_stack node
-    elsif indent_delta < 0
-      stack_pop
-    elsif indent_delta > 0
+    else
+      (-steps + 1).times { stack_pop }
       add_to_stack node
     end
   end
@@ -140,7 +146,9 @@ class Mindflow::Parser
   end
 
   def parse_camelcase(token, rest_line)
-    ClassNode.new(token.to_sym)
+    superclass = rest_line =~ CHAINED_CONSTANTS_RE &&
+                 rest_line.strip
+    ClassNode.new(token.to_sym, superclass: superclass)
   end
 
   def parse_underscore(token, rest_line)
