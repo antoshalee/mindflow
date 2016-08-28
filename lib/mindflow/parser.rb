@@ -14,6 +14,10 @@ class Mindflow::Parser
       @children << node
     end
 
+    def build_ruby_ast!
+      @ast = build_ruby_ast
+    end
+
     def def_body(children = [])
       n(:begin, children)
     end
@@ -39,21 +43,30 @@ class Mindflow::Parser
     end
   end
 
-  # Represents ruby method
+  # Represents mindflow method
   class MethodNode < BaseNode
-    def build_ruby_ast!
+    def build_ruby_ast
       args = n(:args, @options[:args].map { |a| def_arg(a) })
-      @ast = def_method(@name, args)
+      def_method(@name, args)
     end
   end
 
-  # Represents ruby class
+  # Represents mindflow class
   class ClassNode < BaseNode
-    def build_ruby_ast!
-      child_asts = @children.map(&:ast)
-      body = child_asts.size == 1 ? child_asts.first : def_body(child_asts)
+    def build_ruby_ast
       const = def_const(@name)
-      @ast = def_class(const, nil, body)
+      def_class(const, nil, body)
+    end
+
+    def body
+      child_asts = @children.map(&:ast)
+      child_asts.size == 1 ? child_asts.first : def_body(child_asts)
+    end
+  end
+
+  class SelfNode < ClassNode
+    def build_ruby_ast
+      n(:sclass, [n(:self), body])
     end
   end
 
@@ -122,12 +135,14 @@ class Mindflow::Parser
     line[/\A\s*/].size
   end
 
-  def parse_underscore(method_name, rest_line)
+  def parse_underscore(token, rest_line)
+    return SelfNode.new(token) if token == 'self'
+
     args = if rest_line =~ ARGS_RE
              rest_line.split(' ')
            else
              []
            end
-    MethodNode.new(method_name, args: args)
+    MethodNode.new(token, args: args)
   end
 end
