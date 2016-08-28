@@ -1,0 +1,5 @@
+User
+  say_hello
+
+Post
+  publish!

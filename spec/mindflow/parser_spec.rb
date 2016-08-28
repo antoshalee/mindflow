@@ -5,21 +5,33 @@ describe Mindflow::Parser do
 
   subject { described_class.new.parse(source) }
 
-  describe 'file examples' do
-    context 'example1' do
-      let(:source) do
-        Pathname.new("#{__dir__}/../fixtures/example1.mind").read
-      end
+  def ast(filename)
+    code = Pathname.new("#{__dir__}/../fixtures/#{filename}").read
+    ::Parser::CurrentRuby.parse code
+  end
 
-      let(:ast) do
-        ruby = Pathname.new("#{__dir__}/../fixtures/example1.rb").read
-        ::Parser::CurrentRuby.parse ruby
-      end
+  describe 'file examples' do
+    let(:source) do
+      Pathname.new("#{__dir__}/../fixtures/#{example}.mindflow").read
+    end
+
+    context 'example1' do
+      let(:example) { 1 }
 
       it 'works' do
         expect(subject.size).to eq 1
         expect(subject.first).to be_instance_of(Mindflow::File)
-        expect(subject.first.ast).to eq ast
+        expect(subject.first.ast).to eq ast('1_1.rb')
+      end
+    end
+
+    context 'example2' do
+      let(:example) { 2 }
+
+      it 'works' do
+        expect(subject.size).to eq 2
+        expect(subject.first.ast).to eq ast('2_1.rb')
+        expect(subject.last.ast).to eq ast('2_2.rb')
       end
     end
   end

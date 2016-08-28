@@ -1,10 +1,6 @@
 # Parse mindflow string and returns Ruby AST
 class Mindflow::Parser
   def parse(str)
-    [Mindflow::File.new(parse_ast(str))]
-  end
-
-  def parse_ast(str)
     lines = str.split(/\r?\n/)
 
     @stack = []
@@ -18,19 +14,20 @@ class Mindflow::Parser
           def_method(m.first, args)
         end
 
-        body = def_body(methods)
+        body = methods.size == 1 ? methods.first : def_body(methods)
 
-        def_class(def_const(node[1]), nil, body)
+        ast = def_class(def_const(node[1]), nil, body)
+        Mindflow::File.new(ast)
       else
         nil
       end
-    end.first
+    end
   ensure
     @stack = []
   end
 
   CAMELCASE_RE = /([A-Z][a-z0-9]+)+/ # TODO: find a better version for camelcase
-  UNDERSCORE_RE = /([a-z0-9_]+)/ # TODO: find a better regexp for underscore
+  UNDERSCORE_RE = /([a-z0-9_]+\!?)/ # TODO: find a better regexp for underscore
   ARGS_RE = /\(#{UNDERSCORE_RE}(,#{UNDERSCORE_RE})*\)/
 
   def parse_line(line)
