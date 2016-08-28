@@ -28,7 +28,7 @@ class Mindflow::Parser
 
   CAMELCASE_RE = /([A-Z][a-z0-9]+)+/ # TODO: find a better version for camelcase
   UNDERSCORE_RE = /([a-z0-9_]+\!?)/ # TODO: find a better regexp for underscore
-  ARGS_RE = /\(#{UNDERSCORE_RE}(,#{UNDERSCORE_RE})*\)/
+  ARGS_RE = /#{UNDERSCORE_RE}(\s#{UNDERSCORE_RE})*/
 
   def parse_line(line)
     line = line.strip
@@ -44,7 +44,7 @@ class Mindflow::Parser
     if @stack.last.first == :class
 
       args = if rest_line =~ ARGS_RE
-               rest_line.gsub(/\(|\)/, '').split(',')
+               rest_line.split(' ')
              else
                []
              end
