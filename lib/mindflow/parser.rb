@@ -96,10 +96,8 @@ class Mindflow::Parser
 
   CAMELCASE_RE = /([A-Z][a-z0-9]+)+/ # TODO: find a better version for camelcase
   CHAINED_CONSTANTS_RE = /#{CAMELCASE_RE}(\:\:#{CAMELCASE_RE})*/
-
   UNDERSCORE_RE = /([a-z0-9_]+\!?)/ # TODO: find a better regexp for underscore
   ARGS_RE = /#{UNDERSCORE_RE}(\s#{UNDERSCORE_RE})*/
-
 
   TAB_SIZE = 2
   def parse_line(line)
@@ -119,12 +117,12 @@ class Mindflow::Parser
   end
 
   def operate_on_stack(steps, node)
-    if steps > 0
-      add_to_stack node
-    else
-      (-steps + 1).times { stack_pop }
-      add_to_stack node
-    end
+    (-steps + 1).times { stack_pop } if steps <= 0
+    add_to_stack node
+  end
+
+  def stack_pop
+    @stack.pop.build_ruby_ast!
   end
 
   def add_to_stack(node)
@@ -135,10 +133,6 @@ class Mindflow::Parser
     end
 
     @stack << node
-  end
-
-  def stack_pop
-    @stack.pop.build_ruby_ast!
   end
 
   def get_indent(line)
