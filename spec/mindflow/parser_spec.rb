@@ -6,13 +6,13 @@ describe Mindflow::Parser do
   subject { described_class.new.parse(source) }
 
   def ast(filename)
-    code = Pathname.new("#{__dir__}/../fixtures/#{filename}").read
+    code = Pathname.new("#{__dir__}/../examples/#{filename}").read
     ::Parser::CurrentRuby.parse code
   end
 
   describe 'file examples' do
     let(:source) do
-      Pathname.new("#{__dir__}/../fixtures/#{example}.mindflow").read
+      Pathname.new("#{__dir__}/../examples/#{example}.mindflow").read
     end
 
     context 'example1' do
