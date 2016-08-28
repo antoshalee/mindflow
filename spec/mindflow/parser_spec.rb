@@ -17,7 +17,9 @@ describe Mindflow::Parser do
       end
 
       it 'works' do
-        expect(subject).to eq ast
+        expect(subject.size).to eq 1
+        expect(subject.first).to be_instance_of(Mindflow::File)
+        expect(subject.first.ast).to eq ast
       end
     end
   end

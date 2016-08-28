@@ -1,6 +1,10 @@
 # Parse mindflow string and returns Ruby AST
 class Mindflow::Parser
   def parse(str)
+    [Mindflow::File.new(parse_ast(str))]
+  end
+
+  def parse_ast(str)
     lines = str.split(/\r?\n/)
 
     @stack = []
