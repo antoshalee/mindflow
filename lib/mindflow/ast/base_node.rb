@@ -43,7 +43,7 @@ module Mindflow
       end
 
       def n(type, children = [])
-        Parser::AST::Node.new(type, children)
+        ::Parser::AST::Node.new(type, children)
       end
     end
   end
