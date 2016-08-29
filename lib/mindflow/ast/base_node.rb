@@ -3,7 +3,7 @@ module Mindflow
     # Base class for mindflow AST nodes
     # Node can build ruby AST-subtree
     class BaseNode
-      attr_reader :ast
+      attr_reader :ast, :name
       def initialize(name, options = {})
         @name = name
         @options = options

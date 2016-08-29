@@ -42,6 +42,7 @@ describe Mindflow::Parser do
       context('3') { let(:n) { 3 }; include_examples 'valid mindflows'; }
       context('4') { let(:n) { 4 }; include_examples 'valid mindflows'; }
       context('5') { let(:n) { 5 }; include_examples 'valid mindflows'; }
+      context('6') { let(:n) { 6 }; include_examples 'valid mindflows'; }
     end
   end
 end

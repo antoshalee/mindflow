@@ -37,6 +37,8 @@ module Mindflow
       steps = (indent - @current_indent) / TAB_SIZE
       @current_indent = indent
 
+      (-steps + 1).times { stack_pop } if steps <= 0
+
       line = line.strip
       node = case line
              when CAMELCASE_RE
@@ -44,11 +46,6 @@ module Mindflow
              when UNDERSCORE_RE
                parse_underscore($&, $')
              end
-      operate_on_stack(steps, node)
-    end
-
-    def operate_on_stack(steps, node)
-      (-steps + 1).times { stack_pop } if steps <= 0
       add_to_stack node
     end
 
@@ -60,7 +57,12 @@ module Mindflow
       if @stack.empty?
         @files << node
       else
-        @stack.last.append node
+        if node.instance_of?(Mindflow::AST::ClassNode)
+          # each class is in the separate file
+          @files << node
+        else
+          @stack.last.append node
+        end
       end
 
       @stack << node
@@ -74,7 +76,13 @@ module Mindflow
       superclass = rest_line =~ CHAINED_CONSTANTS_RE &&
                    rest_line.strip
 
-      Mindflow::AST::ClassNode.new(token, superclass: superclass)
+      name = (current_namespace << token).join '::'
+      Mindflow::AST::ClassNode.new(name, superclass: superclass)
+    end
+
+    def current_namespace
+      @stack.select { |n| n.instance_of?(Mindflow::AST::ClassNode) }
+            .map(&:name)
     end
 
     def parse_underscore(token, rest_line)
