@@ -7,6 +7,7 @@ module Mindflow
       @current_indent = -2
 
       lines = str.split(/\r?\n/)
+                 .delete_if { |l| l.match(/\A\s*\z/) } # remove empty lines
 
       @files = []
       @stack = []
@@ -20,7 +21,7 @@ module Mindflow
     private
 
     # TODO: find a better regexps
-    CAMELCASE_RE = /([A-Z][a-z0-9]+)+/
+    CAMELCASE_RE = /([A-Z][a-z0-9]*)+/
     CHAINED_CONSTANTS_RE = /#{CAMELCASE_RE}(\:\:#{CAMELCASE_RE})*/
     UNDERSCORE_RE = /([a-z0-9_]+\!?)/
     ARGS_RE = /#{UNDERSCORE_RE}(\s#{UNDERSCORE_RE})*/
@@ -68,6 +69,7 @@ module Mindflow
     def parse_camelcase(token, rest_line)
       superclass = rest_line =~ CHAINED_CONSTANTS_RE &&
                    rest_line.strip
+
       Mindflow::AST::ClassNode.new(token, superclass: superclass)
     end
 

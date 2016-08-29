@@ -36,13 +36,12 @@ describe Mindflow::Parser do
         end
       end
 
-      5.times do |n|
-        context "mindflow #{n}" do
-          let(:n) { n }
-
-          include_examples 'valid mindflows'
-        end
-      end
+      context('0') { let(:n) { 0 }; include_examples 'valid mindflows'; }
+      context('1') { let(:n) { 1 }; include_examples 'valid mindflows'; }
+      context('2') { let(:n) { 2 }; include_examples 'valid mindflows'; }
+      context('3') { let(:n) { 3 }; include_examples 'valid mindflows'; }
+      context('4') { let(:n) { 4 }; include_examples 'valid mindflows'; }
+      context('5') { let(:n) { 5 }; include_examples 'valid mindflows'; }
     end
   end
 end
