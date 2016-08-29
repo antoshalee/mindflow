@@ -8,10 +8,14 @@ module Mindflow
     end
 
     def run
-      puts Unparser.unparse(ast)
+      files.each do |file|
+        puts Unparser.unparse(file.ast)
+      end
     end
 
-    def ast
+    private
+
+    def files
       Mindflow::Parser.new.parse(input)
     end
 
