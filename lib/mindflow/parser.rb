@@ -39,14 +39,17 @@ module Mindflow
 
       (-steps + 1).times { stack_pop } if steps <= 0
 
+      add_to_stack build_node(line)
+    end
+
+    def build_node(line)
       line = line.strip
-      node = case line
-             when CAMELCASE_RE
-               parse_camelcase($&, $')
-             when UNDERSCORE_RE
-               parse_underscore($&, $')
-             end
-      add_to_stack node
+      case line
+      when CAMELCASE_RE
+        parse_camelcase($&, $')
+      when UNDERSCORE_RE
+        parse_underscore($&, $')
+      end
     end
 
     def stack_pop
