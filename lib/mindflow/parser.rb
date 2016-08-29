@@ -37,7 +37,7 @@ module Mindflow
       steps = (indent - @current_indent) / TAB_SIZE
       @current_indent = indent
 
-      (-steps + 1).times { stack_pop } if steps <= 0
+      (-steps + 1).times { stack_pop }
 
       add_to_stack build_node(line)
     end
