@@ -54,5 +54,15 @@ describe Mindflow::Parser do
         expect(subject.first.ast).to eq ast('4_1.rb')
       end
     end
+
+    context 'example5' do
+      let(:example) { 5 }
+
+      it 'works' do
+        expect(subject.size).to eq 1
+        expect(subject.first).to be_instance_of(Mindflow::File)
+        expect(subject.first.ast).to eq ast('5_1.rb')
+      end
+    end
   end
 end

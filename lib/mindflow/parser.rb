@@ -36,8 +36,12 @@ class Mindflow::Parser
       n(:class, [name, superclass, body])
     end
 
-    def def_const(name)
-      n(:const, [nil, name.to_sym])
+    # param chain should be an array of constant chunks
+    # e.g. ['ActiveSupport', 'Deprecation', 'Behaviour']
+    def def_const(chain)
+      name = chain.pop
+      ns = chain.empty? ? nil : def_const(chain)
+      n(:const, [ns, name.to_sym])
     end
 
     def n(type, children = [])
@@ -56,16 +60,23 @@ class Mindflow::Parser
   # Represents mindflow class
   class ClassNode < BaseNode
     def build_ruby_ast
-      class_name = def_const(@name)
+      class_name = def_const(@name.split('::'))
       superclass_name =
-        @options[:superclass] && def_const(@options[:superclass])
+        @options[:superclass] && def_const(@options[:superclass].split('::'))
 
       def_class(class_name, superclass_name, body)
     end
 
     def body
       child_asts = @children.map(&:ast)
-      child_asts.size == 1 ? child_asts.first : def_body(child_asts)
+      case child_asts.size
+      when 0
+        nil
+      when 1
+        child_asts.first
+      else
+        def_body(child_asts)
+      end
     end
   end
 
@@ -140,7 +151,7 @@ class Mindflow::Parser
   def parse_camelcase(token, rest_line)
     superclass = rest_line =~ CHAINED_CONSTANTS_RE &&
                  rest_line.strip
-    ClassNode.new(token.to_sym, superclass: superclass)
+    ClassNode.new(token, superclass: superclass)
   end
 
   def parse_underscore(token, rest_line)
