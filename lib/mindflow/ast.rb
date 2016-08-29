@@ -3,5 +3,8 @@ require_relative 'ast/class_node'
 require_relative 'ast/method_node'
 require_relative 'ast/self_node'
 
-class Mindflow::AST
+module Mindflow
+  # Mindflow AST namespace
+  module AST
+  end
 end

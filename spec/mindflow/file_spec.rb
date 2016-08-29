@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Mindflow::File do
-  describe "#relative_path" do
+  describe '#relative_path' do
     let(:ast) do
       name = Parser::AST::Node.new(:const, [nil, :user])
       Parser::AST::Node.new(:class, [name, nil, nil])
