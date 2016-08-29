@@ -2,91 +2,6 @@
 # of ruby abstract syntax trees
 # compatible with https://github.com/whitequark/parser
 class Mindflow::Parser
-  # Base class for mindflow AST nodes
-  # Node can build ruby AST-subtree
-  class BaseNode
-    attr_reader :ast
-    def initialize(name, options = {})
-      @name = name
-      @options = options
-      @children = []
-    end
-
-    def append(node)
-      @children << node
-    end
-
-    def build_ruby_ast!
-      @ast = build_ruby_ast
-    end
-
-    def def_body(children = [])
-      n(:begin, children)
-    end
-
-    def def_method(name, args)
-      n(:def, [name.to_sym, n(:args, args), nil])
-    end
-
-    def def_arg(arg)
-      n(:arg, [arg.to_sym])
-    end
-
-    def def_class(name, superclass, body)
-      n(:class, [name, superclass, body])
-    end
-
-    # param chain should be an array of constant chunks
-    # e.g. ['ActiveSupport', 'Deprecation', 'Behaviour']
-    def def_const(chain)
-      name = chain.pop
-      ns = chain.empty? ? nil : def_const(chain)
-      n(:const, [ns, name.to_sym])
-    end
-
-    def n(type, children = [])
-      Parser::AST::Node.new(type, children)
-    end
-  end
-
-  # Represents mindflow method
-  class MethodNode < BaseNode
-    def build_ruby_ast
-      args = n(:args, @options[:args].map { |a| def_arg(a) })
-      def_method(@name, args)
-    end
-  end
-
-  # Represents mindflow class
-  class ClassNode < BaseNode
-    def build_ruby_ast
-      class_name = def_const(@name.split('::'))
-      superclass_name =
-        @options[:superclass] && def_const(@options[:superclass].split('::'))
-
-      def_class(class_name, superclass_name, body)
-    end
-
-    def body
-      child_asts = @children.map(&:ast)
-      case child_asts.size
-      when 0
-        nil
-      when 1
-        child_asts.first
-      else
-        def_body(child_asts)
-      end
-    end
-  end
-
-  # Represents mindflow self scope
-  class SelfNode < ClassNode
-    def build_ruby_ast
-      n(:sclass, [n(:self), body])
-    end
-  end
-
   def parse(str)
     @current_indent = -2
 
@@ -151,17 +66,17 @@ class Mindflow::Parser
   def parse_camelcase(token, rest_line)
     superclass = rest_line =~ CHAINED_CONSTANTS_RE &&
                  rest_line.strip
-    ClassNode.new(token, superclass: superclass)
+    Mindflow::AST::ClassNode.new(token, superclass: superclass)
   end
 
   def parse_underscore(token, rest_line)
-    return SelfNode.new(token) if token == 'self'
+    return Mindflow::AST::SelfNode.new(token) if token == 'self'
 
     args = if rest_line =~ ARGS_RE
              rest_line.split(' ')
            else
              []
            end
-    MethodNode.new(token, args: args)
+    Mindflow::AST::MethodNode.new(token, args: args)
   end
 end

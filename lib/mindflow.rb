@@ -1,6 +1,7 @@
 require 'mindflow/version'
 require 'mindflow/parser'
 require 'mindflow/file'
+require 'mindflow/ast'
 require 'parser/current'
 require 'unparser'
 
