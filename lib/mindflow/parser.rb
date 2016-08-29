@@ -6,8 +6,7 @@ module Mindflow
     def parse(str)
       @current_indent = -2
 
-      lines = str.split(/\r?\n/)
-                 .delete_if { |l| l.match(/\A\s*\z/) } # remove empty lines
+      lines = build_lines(str)
 
       @files = []
       @stack = []
@@ -19,6 +18,11 @@ module Mindflow
     end
 
     private
+
+    def build_lines(str)
+      str.split(/\r?\n/)
+         .delete_if { |l| l.match(/\A\s*\z/) } # remove empty lines
+    end
 
     # TODO: find a better regexps
     CAMELCASE_RE = /([A-Z][a-z0-9]*)+/
