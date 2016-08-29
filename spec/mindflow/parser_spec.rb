@@ -5,63 +5,43 @@ describe Mindflow::Parser do
 
   subject { described_class.new.parse(source) }
 
-  def ast(filename)
-    code = Pathname.new("#{__dir__}/../examples/#{filename}").read
+  def ruby_ast(path)
+    code = Pathname.new(path).read
     ::Parser::CurrentRuby.parse code
   end
 
-  describe 'file examples' do
+  describe 'valid file examples' do
     let(:source) do
-      Pathname.new("#{__dir__}/../examples/#{example}.mindflow").read
+      Pathname.new("#{path_to_examples}/#{n}.mindflow").read
     end
 
-    context 'example1' do
-      let(:example) { 1 }
-
-      it 'works' do
-        expect(subject.size).to eq 1
-        expect(subject.first).to be_instance_of(Mindflow::File)
-        expect(subject.first.ast).to eq ast('1_1.rb')
+    describe 'valid' do
+      let(:path_to_examples) do
+        "#{__dir__}/../examples/valid"
       end
-    end
 
-    context 'example2' do
-      let(:example) { 2 }
+      shared_examples 'valid mindflows' do
+        let(:paths_to_rb) { Dir["#{path_to_examples}/#{n}*.rb"].sort }
 
-      it 'works' do
-        expect(subject.size).to eq 2
-        expect(subject.first.ast).to eq ast('2_1.rb')
-        expect(subject.last.ast).to eq ast('2_2.rb')
+        describe 'subject size' do
+          it { expect(subject.size).to eq(paths_to_rb.size) }
+        end
+
+        it { expect(subject).to all(be_instance_of Mindflow::File) }
+
+        it 'builds correct ruby ast' do
+          paths_to_rb.each_with_index do |path, idx|
+            expect(subject[idx].ast).to eq ruby_ast(path)
+          end
+        end
       end
-    end
 
-    context 'example3' do
-      let(:example) { 3 }
+      5.times do |n|
+        context "mindflow #{n}" do
+          let(:n) { n }
 
-      it 'works' do
-        expect(subject.size).to eq 1
-        expect(subject.first).to be_instance_of(Mindflow::File)
-        expect(subject.first.ast).to eq ast('3_1.rb')
-      end
-    end
-
-    context 'example4' do
-      let(:example) { 4 }
-
-      it 'works' do
-        expect(subject.size).to eq 1
-        expect(subject.first).to be_instance_of(Mindflow::File)
-        expect(subject.first.ast).to eq ast('4_1.rb')
-      end
-    end
-
-    context 'example5' do
-      let(:example) { 5 }
-
-      it 'works' do
-        expect(subject.size).to eq 1
-        expect(subject.first).to be_instance_of(Mindflow::File)
-        expect(subject.first.ast).to eq ast('5_1.rb')
+          include_examples 'valid mindflows'
+        end
       end
     end
   end
