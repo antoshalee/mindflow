@@ -1,6 +1,6 @@
 module Mindflow
   class File
-    attr_reader :ast
+    attr_reader :ast, :location
 
     DEFAULT_DIR = 'lib'.freeze
 
@@ -9,13 +9,12 @@ module Mindflow
       @location = location
     end
 
-    def relative_path
+    alias path_to_dir location
+
+    def path
       "#{@location}/#{name}.rb"
     end
 
-    private
-
-    # TODO: dummy logic
     def name
       @ast.children[0].children[1]
     end
