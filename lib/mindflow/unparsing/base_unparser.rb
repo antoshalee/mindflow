@@ -13,6 +13,7 @@ module Mindflow::Unparsing
     R_PAR = ')'.freeze
     L_ARR = '<'.freeze # TODO: not sure about the constant name
     CLASS_KW = 'class'.freeze
+    MODULE_KW = 'module'.freeze
     DEF_KW = 'def'.freeze
     END_KW = 'end'.freeze
 

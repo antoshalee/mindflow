@@ -4,7 +4,7 @@ module Mindflow::Dsl
       add_child ModuleNode.new
     end
 
-    def cl(*attrs)
+    def c(*attrs)
       add_child ClassNode.new(*attrs)
     end
 
@@ -29,7 +29,14 @@ module Mindflow::Dsl
     end
 
     def file_path
-      "lib/#{name.downcase}.rb"
+      path_parts = ['lib']
+      path_parts += namespace.map(&:downcase)
+      path_parts << "#{name.downcase}.rb"
+      path_parts.join '/'
+    end
+
+    def namespace
+      [parent.name].compact
     end
   end
 end

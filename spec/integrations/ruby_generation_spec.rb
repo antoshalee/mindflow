@@ -67,4 +67,14 @@ describe 'Ruby generation' do
       expect(output_2).to eq expected_2
     end
   end
+
+  context 'example 3' do
+    let(:n) { '3' }
+
+    it 'works' do
+      expected = File.read("#{path_to_examples}/3_1.rb")
+      output = File.read("#{root_dir}/lib/blog/post.rb")
+      expect(output).to eq expected
+    end
+  end
 end

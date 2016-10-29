@@ -1,6 +1,7 @@
 require_relative 'dsl/base_node'
 require_relative 'dsl/root_node'
 require_relative 'dsl/class_node'
+require_relative 'dsl/module_node'
 require_relative 'dsl/method_node'
 
 module Mindflow

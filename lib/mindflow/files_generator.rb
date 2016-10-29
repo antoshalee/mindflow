@@ -14,7 +14,7 @@ module Mindflow
             Mindflow::File.new(root_dir: @root_dir,
                                path_to_file: node.file_path)
 
-          files_hash[node.file_path].asts << node
+          files_hash[node.file_path].asts << node.with_ancestors
         end
       end
 
