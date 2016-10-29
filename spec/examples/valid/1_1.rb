@@ -1,7 +1,8 @@
 class User
-  def initialize
+  def initialize(first_name, last_name)
   end
 
-  def say_hello(to)
+  def full_name
   end
+
 end
