@@ -1,9 +1,10 @@
 module Mindflow::Unparsing
   class BaseUnparser
-    def initialize(node, buffer: String.new, indent: 0)
+    def initialize(node, buffer: String.new, indent: 0, is_last: false)
       @node = node
       @buffer = buffer
       @indent = indent
+      @is_last = is_last
     end
 
     WS = ' '.freeze
@@ -47,10 +48,13 @@ module Mindflow::Unparsing
     end
 
     def unparse_children
-      node.children.each do |node|
+      size = node.children.size
+      node.children.each.with_index do |node, idx|
+        is_last = (idx == (size - 1))
         Mindflow::Unparsing
           .build_unparser_for(node, buffer: @buffer,
-                                    indent: (@indent + 2)).unparse
+                                    indent: (@indent + 2),
+                                    is_last: is_last).unparse
       end
     end
   end

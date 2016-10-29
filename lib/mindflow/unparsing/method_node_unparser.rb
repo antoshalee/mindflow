@@ -9,17 +9,16 @@ module Mindflow::Unparsing
       end
       write END_KW
       write_nl
-      write_nl
+      write_nl unless @is_last
     end
 
     private
 
     def write_method_args(line)
-      if node.method_args.size > 0
-        line.write L_PAR
-        line.write node.method_args.join ', '
-        line.write R_PAR
-      end
+      return if node.method_args.empty?
+      line.write L_PAR
+      line.write node.method_args.join ', '
+      line.write R_PAR
     end
   end
 end
