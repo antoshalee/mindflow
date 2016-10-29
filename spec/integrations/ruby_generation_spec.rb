@@ -30,12 +30,15 @@ describe 'Ruby generation' do
     Dir["#{root_dir}/#{n}*.rb"].sort
   end
 
+  before do
+    generator.generate
+  end
+
   context 'example 0' do
     let(:n) { 0 }
 
     it 'works' do
       expected = File.read("#{path_to_examples}/0_1.rb")
-      generator.generate
       output = File.read("#{root_dir}/lib/post.rb")
       expect(output).to eq expected
     end
@@ -46,7 +49,6 @@ describe 'Ruby generation' do
 
     it 'works' do
       expected = File.read("#{path_to_examples}/1_1.rb")
-      generator.generate
       output = File.read("#{root_dir}/lib/user.rb")
       expect(output).to eq expected
     end
@@ -57,9 +59,12 @@ describe 'Ruby generation' do
 
     it 'works' do
       expected_1 = File.read("#{path_to_examples}/2_1.rb")
-      generator.generate
       output_1 = File.read("#{root_dir}/lib/user.rb")
       expect(output_1).to eq expected_1
+
+      expected_2 = File.read("#{path_to_examples}/2_2.rb")
+      output_2 = File.read("#{root_dir}/lib/post.rb")
+      expect(output_2).to eq expected_2
     end
   end
 end
