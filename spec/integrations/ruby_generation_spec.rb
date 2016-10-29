@@ -36,7 +36,7 @@ describe 'Ruby generation' do
     it 'works' do
       expected = File.read("#{path_to_examples}/0_1.rb")
       generator.generate
-      output = File.read("#{root_dir}/lib/Post.rb")
+      output = File.read("#{root_dir}/lib/post.rb")
       expect(output).to eq expected
     end
   end

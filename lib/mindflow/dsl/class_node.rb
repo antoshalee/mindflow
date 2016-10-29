@@ -20,12 +20,16 @@ module Mindflow::Dsl
       args.first
     end
 
+    def superclass
+      args[1]
+    end
+
     def fileable?
       true
     end
 
     def file_path
-      "lib/user.rb"
+      "lib/#{name.downcase}.rb"
     end
   end
 end

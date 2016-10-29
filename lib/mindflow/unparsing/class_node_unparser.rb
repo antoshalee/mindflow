@@ -11,12 +11,17 @@ module Mindflow::Unparsing
 
     def write_class_definition
       line do |l|
-        l.write CLASS_KW, WS
-        l.write node.name
+        l.write CLASS_KW, WS, node.name
+        write_superclass(l)
       end
       unparse_children
       write END_KW
       write_nl
+    end
+
+    def write_superclass(line)
+      return unless node.superclass
+      line.write WS, L_ARR, WS, node.superclass
     end
   end
 end

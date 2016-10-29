@@ -10,6 +10,7 @@ module Mindflow::Unparsing
     NL = "\n".freeze
     L_PAR = '('.freeze
     R_PAR = ')'.freeze
+    L_ARR = '<'.freeze # TODO: not sure about the constant name
     CLASS_KW = 'class'.freeze
     DEF_KW = 'def'.freeze
     END_KW = 'end'.freeze
