@@ -1,4 +1,4 @@
-User
-  say_hello
-Post
-  publish!
+c User
+  d say_hello
+c Post
+  d publish!

@@ -1,3 +1,3 @@
-cl User
+c User
   d initialize first_name last_name
   d full_name
