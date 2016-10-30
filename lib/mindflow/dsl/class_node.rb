@@ -38,5 +38,13 @@ module Mindflow::Dsl
     def namespace
       [parent.name].compact
     end
+
+    def namespace_extender?
+      true
+    end
+
+    def should_be_placed_in_separate_file?
+      true
+    end
   end
 end

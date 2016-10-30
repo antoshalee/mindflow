@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Ruby generation' do
   before do
-    FileUtils.rmdir root_dir
+    FileUtils.rmdir root_dir, verbose: true
   end
 
   def ruby_code(path)
@@ -75,6 +75,20 @@ describe 'Ruby generation' do
       expected = File.read("#{path_to_examples}/3_1.rb")
       output = File.read("#{root_dir}/lib/blog/post.rb")
       expect(output).to eq expected
+    end
+  end
+
+  context 'example 4' do
+    let(:n) { '4' }
+
+    it 'works' do
+      expected_1 = File.read("#{path_to_examples}/4_1.rb")
+      output_1 = File.read("#{root_dir}/lib/blog/post.rb")
+      expect(output_1).to eq expected_1
+
+      expected_2 = File.read("#{path_to_examples}/4_2.rb")
+      output_2 = File.read("#{root_dir}/lib/blog.rb")
+      expect(output_2).to eq expected_2
     end
   end
 end

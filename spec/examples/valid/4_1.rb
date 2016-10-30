@@ -1,18 +1,6 @@
-class UserApplication < Application
-  class << self
-    def reject_all!
+class Blog
+  class Post
+    def publish!
     end
-
-    def apply_all!
-    end
-
-    def published
-    end
-  end
-
-  def reject!
-  end
-
-  def apply!
   end
 end

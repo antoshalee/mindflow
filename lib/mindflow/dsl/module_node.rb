@@ -7,5 +7,9 @@ module Mindflow::Dsl
     def name
       args.first
     end
+
+    def namespace_extender?
+      true
+    end
   end
 end

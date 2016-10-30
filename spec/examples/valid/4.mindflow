@@ -1,7 +1,3 @@
-UserApplication Application
-  self
-    reject_all!
-    apply_all!
-    published
-  reject!
-  apply!
+c Blog
+  c Post
+    d publish!
