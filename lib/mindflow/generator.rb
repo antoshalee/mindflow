@@ -11,31 +11,20 @@ module Mindflow
     end
 
     def generate
-      root_node = Mindflow::Parser2.new.parse(input)
-
-      files = Mindflow::FilesGenerator.new(root_node, root_dir: @root_dir)
-                                      .generate
-
-      files.each do |m_file|
-        # m_file stands for Mindflow::File to separate them
-        # from the system File instances
-        FileUtils.mkdir_p m_file.full_path_to_dir
-        m_file.write!
+      files.each do |file|
+        FileUtils.mkdir_p file.full_path_to_dir
+        file.write!
       end
     end
 
     private
 
-    def full_path_to_dir(file)
-      ::File.expand_path ::File.join(root_dir, file.path_to_dir)
-    end
-
-    def full_path_to_file(file)
-      ::File.expand_path ::File.join(root_dir, file.path)
-    end
-
     def files
-      Mindflow::Parser.new.parse(input)
+      Mindflow::FilesGenerator.new(root_node, root_dir: @root_dir).generate
+    end
+
+    def root_node
+      Mindflow::Parser2.new.parse(input)
     end
 
     def input
