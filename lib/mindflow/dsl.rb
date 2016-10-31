@@ -8,16 +8,3 @@ module Mindflow
   module Dsl
   end
 end
-# m Posthire
-#   m Background
-#     cl Check
-#     d to_s
-#     d close!
-#     cl Rule
-#     p app/services
-#       CreateService
-#       DeleteService
-#   m DataCollection
-#     cl Check
-#       cl CreationException no_file
-#     cl Rule

@@ -1,7 +1,7 @@
 module Mindflow
   # Reads mindflow specification
   # located at input_path
-  # and generates equivalent ruby file
+  # and generates equivalent ruby file(s)
   class Generator
     attr_reader :root_dir
 
@@ -20,10 +20,10 @@ module Mindflow
     private
 
     def files
-      Mindflow::FilesGenerator.new(root_node, root_dir: @root_dir).generate
+      Mindflow::FilesGenerator.new(ast, root_dir: @root_dir).generate
     end
 
-    def root_node
+    def ast
       Mindflow::Parser2.new.parse(input)
     end
 
