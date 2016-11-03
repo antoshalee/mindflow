@@ -16,6 +16,8 @@ module Mindflow::Unparsing
     MODULE_KW = 'module'.freeze
     DEF_KW = 'def'.freeze
     END_KW = 'end'.freeze
+    AT = '@'.freeze
+    ASSIGNMENT = '='.freeze
 
     private
 
@@ -39,8 +41,12 @@ module Mindflow::Unparsing
     end
 
     def write(*words)
-      @indent.times { @buffer << WS }
+      write_indent(@indent)
       words.each { |w| @buffer << w }
+    end
+
+    def write_indent(indent)
+      indent.times { @buffer << WS }
     end
 
     # Dont write indents

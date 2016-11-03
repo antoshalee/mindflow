@@ -2,6 +2,7 @@ require_relative 'unparsing/base_unparser'
 require_relative 'unparsing/class_node_unparser'
 require_relative 'unparsing/module_node_unparser'
 require_relative 'unparsing/method_node_unparser'
+require_relative 'unparsing/in_node_unparser'
 
 module Mindflow
   # Unparsing namespace. Holds concerete nodes unparsers

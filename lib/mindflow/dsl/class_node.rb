@@ -16,6 +16,10 @@ module Mindflow::Dsl
       add_child PathNode.new
     end
 
+    def in(*attrs)
+      add_child InNode.new(*attrs)
+    end
+
     def name
       args.first
     end
