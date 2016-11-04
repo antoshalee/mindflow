@@ -1,4 +1,4 @@
-module Mindflow::Dsl
+module Mindflow::Ast
   class ClassNode < BaseNode
     def m
       add_child ModuleNode.new

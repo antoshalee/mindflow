@@ -1,4 +1,4 @@
-module Mindflow::Dsl
+module Mindflow::Ast
   # `in` stands for `initialize`
   # This node represents common pattern of
   # constructor with instance variables assignment

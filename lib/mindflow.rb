@@ -2,7 +2,7 @@ require 'mindflow/version'
 require 'mindflow/parser2'
 require 'mindflow/file'
 require 'mindflow/generator'
-require 'mindflow/dsl'
+require 'mindflow/ast'
 require 'mindflow/files_generator'
 require 'mindflow/unparsing'
 

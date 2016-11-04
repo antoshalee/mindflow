@@ -1,4 +1,4 @@
-module Mindflow::Dsl
+module Mindflow::Ast
   # Base class for all nodes
   class BaseNode
     attr_reader :args

@@ -1,4 +1,4 @@
-module Mindflow::Dsl
+module Mindflow::Ast
   class RootNode < BaseNode
     def c(*attrs)
       add_child ClassNode.new(*attrs)

@@ -7,7 +7,7 @@ module Mindflow
 
       @stack = []
 
-      root_node = Dsl::RootNode.new
+      root_node = Ast::RootNode.new
       add_to_stack root_node
 
       lines.each { |line| parse_line(line) }

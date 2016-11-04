@@ -1,4 +1,4 @@
-module Mindflow::Dsl
+module Mindflow::Ast
   class MethodNode < BaseNode
     attr_reader :name, :method_args
 
