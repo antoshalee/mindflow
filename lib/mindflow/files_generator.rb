@@ -9,7 +9,7 @@ module Mindflow
     def generate
       files_hash = {}
       @root_node.traverse do |node|
-        if node.fileable?
+        if node.place_in_separate_file?
           files_hash[node.file_path] ||= \
             Mindflow::File.new(root_dir: @root_dir,
                                path_to_file: node.file_path)

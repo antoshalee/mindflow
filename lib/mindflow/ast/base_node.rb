@@ -16,10 +16,6 @@ module Mindflow::Ast
       end
     end
 
-    def fileable?
-      false
-    end
-
     def file_path
       raise NotImplementedError
     end
@@ -51,7 +47,7 @@ module Mindflow::Ast
       false
     end
 
-    def should_be_placed_in_separate_file?
+    def place_in_separate_file?
       false
     end
 
@@ -59,7 +55,7 @@ module Mindflow::Ast
       dup.tap do |node|
         node.children = node.children
                             .dup
-                            .delete_if(&:should_be_placed_in_separate_file?)
+                            .delete_if(&:place_in_separate_file?)
       end
     end
 

@@ -28,10 +28,6 @@ module Mindflow::Ast
       args[1]
     end
 
-    def fileable?
-      true
-    end
-
     def file_path
       path_parts = ['lib']
       path_parts += namespace.map(&:downcase)
@@ -47,7 +43,7 @@ module Mindflow::Ast
       true
     end
 
-    def should_be_placed_in_separate_file?
+    def place_in_separate_file?
       true
     end
   end
