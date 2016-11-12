@@ -24,7 +24,7 @@ module Mindflow
     end
 
     def ast
-      Mindflow::Parser2.new.parse(input)
+      Mindflow::Parser.new.parse(input)
     end
 
     def input

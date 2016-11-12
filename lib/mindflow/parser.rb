@@ -1,5 +1,5 @@
 module Mindflow
-  class Parser2
+  class Parser
     def parse(str)
       @current_indent = -2
 

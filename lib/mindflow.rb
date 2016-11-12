@@ -1,5 +1,5 @@
 require 'mindflow/version'
-require 'mindflow/parser2'
+require 'mindflow/parser'
 require 'mindflow/file'
 require 'mindflow/generator'
 require 'mindflow/ast'
