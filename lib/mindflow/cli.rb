@@ -1,4 +1,5 @@
 require 'mindflow'
+require 'listen'
 require 'pathname'
 
 module Mindflow
@@ -8,23 +9,43 @@ module Mindflow
     end
 
     def run
-      files.each do |file|
-        puts Unparser.unparse(file.ast)
-      end
+      generate
+      listen
     end
 
     private
 
-    def files
-      Mindflow::Parser.new.parse(input)
+    def generate
+      puts "Generate ruby files.."
+      FileUtils.rm_rf output_dir
+      Generator.new(path, root_dir: output_dir).generate
+    rescue => ex
+      puts ex.backtrace
     end
 
-    def input
-      Pathname.new(path).read
+    def listen
+      puts "Listen to #{path}"
+      listener = Listen.to(dir, only: /\.mindflow$/) do
+        generate
+      end
+      listener.start # not blocking
+      sleep
     end
 
     def path
-      "#{Dir.pwd}/#{@argv[0]}"
+      ::File.expand_path "#{dir}/#{@argv[0]}"
+    end
+
+    def dir
+      Dir.pwd
+    end
+
+    def output_dir
+      "tmp/mindflow/#{mindflow_name}"
+    end
+
+    def mindflow_name
+      ::File.basename(@argv[0], ".*")
     end
   end
 end

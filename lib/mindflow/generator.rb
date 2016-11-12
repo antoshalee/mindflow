@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Mindflow
   # Reads mindflow specification
   # located at input_path
@@ -12,7 +14,7 @@ module Mindflow
 
     def generate
       files.each do |file|
-        FileUtils.mkdir_p file.full_path_to_dir
+        ::FileUtils.mkdir_p file.full_path_to_dir
         file.write!
       end
     end
