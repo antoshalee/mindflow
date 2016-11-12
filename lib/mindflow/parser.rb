@@ -1,4 +1,5 @@
 module Mindflow
+  # Parses mindflow input string and generates AST
   class Parser
     def parse(str)
       @current_indent = -2

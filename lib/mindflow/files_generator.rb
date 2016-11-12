@@ -1,5 +1,5 @@
 module Mindflow
-  # Takes original AST and separates it into appropriate file paths
+  # Takes original AST and separates it into appropriate files
   class FilesGenerator
     def initialize(root_node, root_dir:)
       @root_node = root_node

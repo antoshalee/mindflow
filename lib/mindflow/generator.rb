@@ -1,14 +1,19 @@
 require 'fileutils'
 
 module Mindflow
-  # Reads mindflow specification
-  # located at input_path
-  # and generates equivalent ruby file(s)
+  # Reads mindflow file and generates equivalent ruby file(s)
+  #
+  # Example (test.mindflow specifies Post and User classes):
+  #
+  #   Generator.new('test.mindflow', root_dir: 'tmp/mindflow').generate
+  #
+  # Will generate files:
+  #
+  # tmp/mindflow/lib/post.rb
+  # tmp/mindflow/lib/user.rb
   class Generator
-    attr_reader :root_dir
-
-    def initialize(input_path, root_dir:)
-      @input_path = input_path
+    def initialize(path_to_mindflow, root_dir:)
+      @path_to_mindflow = path_to_mindflow
       @root_dir = root_dir
     end
 
@@ -30,7 +35,7 @@ module Mindflow
     end
 
     def input
-      Pathname.new(@input_path).read
+      Pathname.new(@path_to_mindflow).read
     end
   end
 end
