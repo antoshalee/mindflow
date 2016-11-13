@@ -59,6 +59,17 @@ module Mindflow::Ast
       end
     end
 
+    # Example:
+    #
+    #   Mindflow::Ast::RootNode.new.node_name => 'Root'
+    #   Mindflow::Ast::CNode.new.node_name => 'C'
+    #   Mindflow::Ast::InNode.new.node_name => 'In'
+    def node_name
+      class_name = self.class.to_s.split('::').last
+      i = class_name.rindex('Node')
+      class_name[0..(i - 1)]
+    end
+
     protected
 
     def add_child(node)

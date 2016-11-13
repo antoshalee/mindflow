@@ -1,6 +1,6 @@
 module Mindflow::Unparsing
   # Generates ruby method code
-  class DNodeUnparser < BaseUnparser
+  class DUnparser < BaseUnparser
     def unparse
       write_method_definition
       write_end

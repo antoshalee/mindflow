@@ -1,6 +1,6 @@
 module Mindflow::Unparsing
   # Generate initializer with attributes assignment
-  class InNodeUnparser < DNodeUnparser
+  class InUnparser < DUnparser
     def unparse
       write_method_definition
       write_assignments
