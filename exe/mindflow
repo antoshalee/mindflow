@@ -4,4 +4,4 @@ $:.unshift File.dirname(__FILE__) + '/../lib'
 
 require 'mindflow/cli'
 
-Mindflow::CLI.new(ARGV).run
+Mindflow::Cli.new(ARGV).run

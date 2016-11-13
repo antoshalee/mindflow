@@ -3,7 +3,7 @@ require 'listen'
 require 'pathname'
 
 module Mindflow
-  class CLI
+  class Cli
     def initialize(argv)
       @argv = argv
     end
