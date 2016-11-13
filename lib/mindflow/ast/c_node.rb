@@ -1,25 +1,7 @@
 module Mindflow::Ast
   # Represents ruby class
   class CNode < BaseNode
-    def m
-      add_child MNode.new
-    end
-
-    def c(*attrs)
-      add_child CNode.new(*attrs)
-    end
-
-    def d(*attrs)
-      add_child DNode.new(*attrs)
-    end
-
-    def p
-      add_child PathNode.new
-    end
-
-    def in(*attrs)
-      add_child InNode.new(*attrs)
-    end
+    acceptable_children :m, :c, :d, :p, :in
 
     def name
       args.first

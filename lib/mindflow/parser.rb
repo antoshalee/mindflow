@@ -40,7 +40,7 @@ module Mindflow
     def build_node(line)
       method, *args = line.split(TOKENS_SEPARATOR)
 
-      @stack.last.send(method, *args)
+      @stack.last.add_child(method, *args)
     end
 
     def stack_pop

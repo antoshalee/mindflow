@@ -4,9 +4,29 @@ module Mindflow::Ast
     attr_reader :args
     attr_accessor :parent, :children
 
+    class << self
+      def acceptable_children(*children)
+        @acceptable_children = children
+      end
+
+      def child_allowed?(child)
+        @acceptable_children.include?(child.to_sym)
+      end
+    end
+
     def initialize(*args)
       @args = args
       @children = []
+    end
+
+    def add_child(method, *attrs)
+      if self.class.child_allowed?(method)
+        child_class = Object.const_get("Mindflow::Ast::#{method.capitalize}Node")
+        add_child_node child_class.new(*attrs)
+      else
+        raise UnacceptableChildError,
+          "Unacceptable child '#{method}' for '#{node_name}' node"
+      end
     end
 
     def traverse(&block)
@@ -72,7 +92,7 @@ module Mindflow::Ast
 
     protected
 
-    def add_child(node)
+    def add_child_node(node)
       children << node
       node.parent = self
       node

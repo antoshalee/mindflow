@@ -7,5 +7,6 @@ require_relative 'ast/in_node'
 
 module Mindflow
   module Ast
+    class UnacceptableChildError < StandardError; end
   end
 end

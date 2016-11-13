@@ -1,9 +1,7 @@
 module Mindflow::Ast
   # Represents ruby module
   class MNode < BaseNode
-    def c(*attrs)
-      add_child CNode.new(*attrs)
-    end
+    acceptable_children :c
 
     def name
       args.first
