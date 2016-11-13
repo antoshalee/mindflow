@@ -1,6 +1,6 @@
 module Mindflow::Unparsing
   # Generate ruby class code
-  class ClassNodeUnparser < BaseUnparser
+  class CNodeUnparser < BaseUnparser
     def unparse
       write_class_definition
 

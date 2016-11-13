@@ -1,7 +1,7 @@
 require_relative 'unparsing/base_unparser'
-require_relative 'unparsing/class_node_unparser'
-require_relative 'unparsing/module_node_unparser'
-require_relative 'unparsing/method_node_unparser'
+require_relative 'unparsing/c_node_unparser'
+require_relative 'unparsing/m_node_unparser'
+require_relative 'unparsing/d_node_unparser'
 require_relative 'unparsing/in_node_unparser'
 
 module Mindflow

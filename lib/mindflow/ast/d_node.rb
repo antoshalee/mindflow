@@ -1,5 +1,6 @@
 module Mindflow::Ast
-  class MethodNode < BaseNode
+  # Represents ruby method (d for def)
+  class DNode < BaseNode
     attr_reader :name, :method_args
 
     def initialize(*args)

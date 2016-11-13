@@ -7,7 +7,7 @@ module Mindflow::Ast
   #   @foo = foo
   #   @bar = bar
   # end
-  class InNode < MethodNode
+  class InNode < DNode
     METHOD_NAME = 'initialize'.freeze
 
     def initialize(*args)
