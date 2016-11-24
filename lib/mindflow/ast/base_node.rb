@@ -25,7 +25,7 @@ module Mindflow::Ast
         add_child_node child_class.new(*attrs)
       else
         raise UnacceptableChildError,
-          "Unacceptable child '#{method}' for '#{node_name}' node"
+              "Unacceptable child '#{method}' for '#{node_name}' node"
       end
     end
 
@@ -48,10 +48,6 @@ module Mindflow::Ast
       nil
     end
 
-    def extract_ast_branch_for_file
-      dup_with_excluded_children.parents_and_self
-    end
-
     # TODO: considers only one level parent
     def parents_and_self
       if parent.namespace_extender?
@@ -67,16 +63,8 @@ module Mindflow::Ast
       false
     end
 
-    def place_in_separate_file?
+    def top?
       false
-    end
-
-    def dup_with_excluded_children
-      dup.tap do |node|
-        node.children = node.children
-                            .dup
-                            .delete_if(&:place_in_separate_file?)
-      end
     end
 
     # Example:

@@ -26,7 +26,7 @@ module Mindflow::Ast
       true
     end
 
-    def place_in_separate_file?
+    def top?
       true
     end
   end

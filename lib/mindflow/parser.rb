@@ -8,12 +8,10 @@ module Mindflow
 
       @stack = []
 
-      root_node = Ast::RootNode.new
-      add_to_stack root_node
-
-      lines.each { |line| parse_line(line) }
-
-      root_node
+      Ast::RootNode.new.tap do |root_node|
+        add_to_stack root_node
+        lines.each { |line| parse_line line }
+      end
     end
 
     private

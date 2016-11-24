@@ -28,7 +28,7 @@ module Mindflow
       listener = Listen.to(dir, only: /\.mindflow$/) do
         generate
       end
-      listener.start # not blocking
+      listener.start
       sleep
     end
 
