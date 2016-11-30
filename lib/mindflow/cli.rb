@@ -4,8 +4,11 @@ require 'pathname'
 
 module Mindflow
   class Cli
+    InvalidFileExtension = Class.new(StandardError)
+
     def initialize(argv)
       @argv = argv
+      check_args
     end
 
     def run
@@ -14,6 +17,18 @@ module Mindflow
     end
 
     private
+
+    ALLOWED_EXTNAME = '.mindflow'.freeze
+
+    def check_args
+      if ::File.extname(mindflow_filename) != ALLOWED_EXTNAME
+        raise InvalidFileExtension, 'Invalid file extension for mindflow file'
+      end
+    end
+
+    def mindflow_filename
+      @argv[0]
+    end
 
     def generate
       puts "Generate ruby files.."
@@ -33,7 +48,7 @@ module Mindflow
     end
 
     def path
-      ::File.expand_path "#{dir}/#{@argv[0]}"
+      ::File.expand_path "#{dir}/#{mindflow_filename}"
     end
 
     def dir
@@ -45,7 +60,7 @@ module Mindflow
     end
 
     def mindflow_name
-      ::File.basename(@argv[0], ".*")
+      ::File.basename(mindflow_filename, ".*")
     end
   end
 end
