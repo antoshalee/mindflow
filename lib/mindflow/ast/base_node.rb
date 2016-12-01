@@ -22,18 +22,19 @@ module Mindflow
         @children = []
       end
 
-      def add_child(method_or_node, *attrs)
-        return super if method_or_node.is_a?(BaseNode)
-
-        method = method_or_node
-
-        if self.class.child_allowed?(method)
-          child_class = Object.const_get("Mindflow::Ast::#{method.capitalize}Node")
-          super child_class.new(*attrs)
-        else
-          raise UnacceptableChildError,
-                "Unacceptable child '#{method}' for '#{node_name}' node"
+      def add_child(child, *attrs)
+        unless self.class.child_allowed?(child)
+          raise UnacceptableChildError, "Unacceptable child '#{child.to_sym}' for '#{node_name}' node"
         end
+
+        node = if child.is_a?(BaseNode)
+                 child
+               else
+                 child_class = Object.const_get "Mindflow::Ast::#{child.capitalize}Node"
+                 child_class.new(*attrs)
+               end
+
+        super node
       end
 
       def file_path
@@ -77,6 +78,10 @@ module Mindflow
 
       def to_s
         ([node_name] + args).join ' '
+      end
+
+      def to_sym
+        node_name.downcase.to_sym
       end
 
       protected
