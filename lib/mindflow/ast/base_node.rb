@@ -78,6 +78,14 @@ module Mindflow::Ast
       class_name[0..(i - 1)]
     end
 
+    def inspect
+      "\n" + Mindflow::Printer.new(self).print
+    end
+
+    def to_s
+      ([node_name] + args).join ' '
+    end
+
     protected
 
     def add_child_node(node)

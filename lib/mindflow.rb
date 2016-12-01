@@ -5,6 +5,7 @@ require 'mindflow/generator'
 require 'mindflow/ast'
 require 'mindflow/files_generator'
 require 'mindflow/unparsing'
+require 'mindflow/printer'
 
 # Ruby code generation directly from your mind
 module Mindflow
