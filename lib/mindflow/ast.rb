@@ -1,3 +1,4 @@
+require_relative 'ast/support/tree_support'
 require_relative 'ast/base_node'
 require_relative 'ast/root_node'
 require_relative 'ast/c_node'
