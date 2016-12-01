@@ -44,19 +44,32 @@ module Mindflow::Ast
       Mindflow::Unparsing.build_unparser_for(self).unparse
     end
 
+    def namespace
+      []
+    end
+
     def name
       nil
     end
 
-    # TODO: considers only one level parent
-    def parents_and_self
-      if parent.namespace_extender?
-        node = parent.dup_with_args
-        node.children << dup
-        node
-      else
-        dup
+    def root
+      parent.nil? ? self : parent.root
+    end
+
+    def path
+      path_to_root.reverse
+    end
+
+    def path_to_root
+      result = []
+
+      node = self
+      while node && !node.is_a?(RootNode)
+        result << node.dup_only_args
+        node = node.parent
       end
+
+      result
     end
 
     def namespace_extender?
@@ -94,7 +107,7 @@ module Mindflow::Ast
       node
     end
 
-    def dup_with_args
+    def dup_only_args
       self.class.new(*args)
     end
   end

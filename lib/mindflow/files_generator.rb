@@ -14,7 +14,7 @@ module Mindflow
             Mindflow::File.new(root_dir: @root_dir,
                                path_to_file: node.file_path)
 
-          files_hash[node.file_path].asts << extract_ast_branch_for_file(node)
+          files_hash[node.file_path].asts << ast_branch_for_file(node)
         end
       end
 
@@ -27,8 +27,20 @@ module Mindflow
       node.top?
     end
 
-    def extract_ast_branch_for_file(node)
-      duplicate_and_exclude_top_children(node).parents_and_self
+    def ast_branch_for_file(node)
+      dup = duplicate_and_exclude_top_children(node)
+      path = dup.path
+      path.last.children = dup.children
+
+      build_tree!(path)
+    end
+
+    def build_tree!(path)
+      path.each_with_index do |n, index|
+        child = path[index + 1]
+        n.children << child if child
+      end
+      path.first # root
     end
 
     def duplicate_and_exclude_top_children(origin_node)

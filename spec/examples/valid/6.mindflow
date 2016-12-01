@@ -1,5 +1,8 @@
-User
-  CreateService
-    call
-  UpdateService
-    call
+c Blog
+  c Post
+    c Comment
+      c Tag
+        d destroy
+      d vote
+    d publish
+    d vote

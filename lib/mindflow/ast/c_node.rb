@@ -19,7 +19,7 @@ module Mindflow::Ast
     end
 
     def namespace
-      [parent.name].compact
+      (parent.namespace + [parent.name]).compact
     end
 
     def namespace_extender?
